@@ -7,11 +7,6 @@ namespace UnityStandardAssets.CrossPlatformInput.Inspector
     [InitializeOnLoad]
     public class CrossPlatformInitialize
     {
-        // Custom compiler defines:
-        //
-        // CROSS_PLATFORM_INPUT : denotes that cross platform input package exists, so that other packages can use their CrossPlatformInput functions.
-        // EDITOR_MOBILE_INPUT : denotes that mobile input should be used in editor, if a mobile build target is selected. (i.e. using Unity Remote app).
-        // MOBILE_INPUT : denotes that mobile input should be used right now!
 
         static CrossPlatformInitialize()
         {
@@ -102,7 +97,6 @@ namespace UnityStandardAssets.CrossPlatformInput.Inspector
 
         private static void SetEnabled(string defineName, bool enable, bool mobile)
         {
-            //Debug.Log("setting "+defineName+" to "+enable);
             foreach (var group in mobile ? mobileBuildTargetGroups : buildTargetGroups)
             {
                 var defines = GetDefinesList(group);

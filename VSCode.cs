@@ -11,16 +11,13 @@ namespace dotBunny.Unity
     public static class VSCode
     {
 
-        public const float Version = 2.7f;
+        public const float Version = 1.7f;
 
         public const string VersionCode = "-RELEASE";
 
         public const string UnityDebuggerURL = "https://unity.gallery.vsassets.io/_apis/public/gallery/publisher/unity/extension/unity-debug/latest/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage";
 
         #region Properties
-
-        /// <summary>
-        /// Path to VSCode executable
         public static string CodePath
         {
             get
@@ -28,11 +25,7 @@ namespace dotBunny.Unity
 		        string current = EditorPrefs.GetString("VSCode_CodePath", "");
                 if(current == "" || !VSCodeExists(current))
                 {
-                    //Value not set, set to "" or current path is invalid, try to autodetect it
-                    //If autodetect fails, a error will be printed and the default value set
                     EditorPrefs.SetString("VSCode_CodePath", AutodetectCodePath());
-                    //If its not installed or the install folder isn't a "normal" one,
-                    //AutodetectCodePath will print a error message to the Unity Console
                 }
                 return EditorPrefs.GetString("VSCode_CodePath", current);
             }
@@ -41,11 +34,6 @@ namespace dotBunny.Unity
                 EditorPrefs.SetString("VSCode_CodePath", value);
             }
         }
-        
-        /// <summary>
-        /// Get Program Files Path
-        /// </summary>
-        /// <returns>The platforms "Program Files" path.</returns>
         static string ProgramFilesx86()
 		{
 			if( 8 == IntPtr.Size 
@@ -77,7 +65,6 @@ namespace dotBunny.Unity
             }
             set
             {
-                // When turning the plugin on, we should remove all the previous project files
                 if (!Enabled && value)
                 {
                     ClearProjectFiles();
@@ -97,8 +84,6 @@ namespace dotBunny.Unity
                     
                     // Set value
                     EditorPrefs.SetBool("VSCode_UseUnityDebugger", value);
-                    
-                    // Do not write the launch JSON file because the debugger uses its own
                     if ( value ) {
                         WriteLaunchFile = false;
                     }
@@ -159,7 +144,7 @@ namespace dotBunny.Unity
         {
             get
             {
-                // Feature creation date.
+
                 DateTime lastTime = new DateTime(2015, 10, 8);
 
                 if (EditorPrefs.HasKey("VSCode_LastUpdate"))
@@ -389,8 +374,6 @@ namespace dotBunny.Unity
             var fileContent = string.Empty;
 
             EditorUtility.DisplayProgressBar("VSCode", "Checking for updates ...", 0.5f);
-
-            // Because were not a runtime framework, lets just use the simplest way of doing this
             try
             {
                 using (var webClient = new System.Net.WebClient())
@@ -891,7 +874,7 @@ namespace dotBunny.Unity
         static string ScrubSolutionContent(string content)
         {
             content = content.Replace(
-                "Microsoft Visual Studio Solution File, Format Version 11.00\r\n# Visual Studio 2008\r\n",
+                "Microsoft Visual Studio Solution File, Format Version 11.00\r\n# Visual Studio 2018\r\n",
                 "\r\nMicrosoft Visual Studio Solution File, Format Version 12.00\r\n# Visual Studio 2012");
 
             int startIndex = content.IndexOf("GlobalSection(SolutionProperties) = preSolution");
